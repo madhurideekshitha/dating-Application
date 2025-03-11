@@ -20,6 +20,7 @@ import com.google.dearapp.exceptionclasses.DuplicateEmailIdException;
 import com.google.dearapp.exceptionclasses.DuplicatePhoneException;
 import com.google.dearapp.exceptionclasses.InvalidUserIdException;
 import com.google.dearapp.responsestructure.ResponseStructure;
+import com.google.dearapp.util.EmailService;
 import com.google.dearapp.util.SortByAgeDifferenceAsc;
 import com.google.dearapp.util.UserGender;
 import com.google.dearapp.util.UserRole;
@@ -29,6 +30,9 @@ import com.google.dearapp.util.UserStatus;
 public class UserService {
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public ResponseStructure<User> saveUser(User user) {
 		
@@ -45,7 +49,9 @@ public class UserService {
 		
 		user=userDao.saveUser(user);
 		
-		//send email;
+		//send email
+        emailService. sendFirstEmail(user);
+		
 		
 		ResponseStructure<User> structure=new ResponseStructure<>();
 		structure.setStatus(HttpStatus.OK.value());
